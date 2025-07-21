@@ -47,7 +47,7 @@ class Ui_MainWindow(object):
         self.slider_example = QSlider(self.centralwidget)
         self.slider_example.setObjectName(u"slider_example")
         self.slider_example.setGeometry(QRect(100, 320, 201, 20))
-        self.slider_example.setMinimum(2)
+        self.slider_example.setMinimum(1)
         self.slider_example.setMaximum(5)
         self.slider_example.setOrientation(Qt.Orientation.Horizontal)
         self.plainTextEdit_grammar = QPlainTextEdit(self.centralwidget)
