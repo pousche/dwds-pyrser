@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="button_process">
     <property name="geometry">
      <rect>
       <x>700</x>
@@ -35,6 +35,9 @@
       <width>591</width>
       <height>24</height>
      </rect>
+    </property>
+    <property name="text">
+     <string>Buch</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_vocab">
@@ -136,6 +139,45 @@
       <width>591</width>
       <height>161</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="button_copy_grammar">
+    <property name="geometry">
+     <rect>
+      <x>700</x>
+      <y>90</y>
+      <width>80</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Copy</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="button_copy_meaning">
+    <property name="geometry">
+     <rect>
+      <x>700</x>
+      <y>160</y>
+      <width>80</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Copy</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="button_copy_example">
+    <property name="geometry">
+     <rect>
+      <x>700</x>
+      <y>360</y>
+      <width>80</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Copy</string>
     </property>
    </widget>
   </widget>

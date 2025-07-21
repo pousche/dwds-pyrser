@@ -6,7 +6,7 @@ from PySide6.QtCore import SIGNAL, QObject
 
 # Important:
 # You need to run the following command to generate the ui_form.py file
-#     pyside6-uic form.ui -o ui_form.py, or
+#     pyside6-uic mainwindow.ui -o ui_form.py, or
 #     pyside2-uic form.ui -o ui_form.py
 from ui_form import Ui_MainWindow
 
@@ -18,16 +18,19 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        QObject.connect(self.ui.pushButton, SIGNAL ('clicked()'),
-            lambda mw=self: testFunc(mw))
+        QObject.connect(self.ui.button_process, SIGNAL ('clicked()'),
+            lambda mw=self: MainWindow.processWord(mw))
 
-def testFunc(main_window):
-    parser.load('seufzen')
-    main_window.ui.plainTextEdit_grammar.clear()
-    main_window.ui.plainTextEdit_grammar.appendPlainText(parser.getGrammar())
+    def processWord(self):
+        word = self.ui.lineEdit_vocabulary.text()
+        parser.load(word)
+        self.ui.lineEdit_vocabulary.text()
+        self.clearAll()
+        self.ui.plainTextEdit_grammar.appendPlainText(parser.getGrammar())
+        print('Processed')
 
-
-    print('Processed')
+    def clearAll(self):
+        self.ui.plainTextEdit_grammar.clear()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
