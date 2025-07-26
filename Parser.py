@@ -1,192 +1,206 @@
-# This Python file uses the following encoding: utf-8
 import requests
 from bs4 import BeautifulSoup
 
-def remove_extra_whitespace(text_str):
+def removeExtraWhitespace(text_str):
     if not text_str:
         return
     text_str = text_str.replace('\n', ' ')
     while '  ' in text_str:
         text_str = text_str.replace('  ', ' ')
-
-    while text_str and text_str[0] == ' ':
+    while text_str[0] == ' ':
         text_str = text_str[1:]
-
+    
     return text_str
-
-def tab_space():
+    
+def tabSpace():
     return ' '*4
 
-def find_parent(meaning_list, parent_id):
+def findParent(meaning_list, parent_id):
     for prev_meaning in meaning_list:
         if (parent_id == prev_meaning['id']):
             return prev_meaning
-
+            
 class Parser:
-    def __init__(self, ):
+    def __init__(self):
         pass
 
-
-    def load(self, vocabulary):
+    def process(self, vocabulary):
         link = "https://www.dwds.de/wb/"+vocabulary
         page = requests.get(link)
         soup = BeautifulSoup(page.content, "html.parser")
-
         self.main_soup = soup.find('main')
-        self.vocabulary = vocabulary
-        self.loadMeanings()
+        self.word = vocabulary
+        self.processGarammer()
+        self.processFrequency()
+        self.processMeanings()
 
-    def getGrammar(self):
+
+    def processGarammer(self):
         gram_soup = self.main_soup.find('div', {'class':'dwdswb-ft-block'})
-
         gram_text = gram_soup.find('span',{'class':'dwdswb-ft-blocktext'}).text
         gram_text = gram_text.replace('·','|')
         gram_text = gram_text.replace('Maskulinum','der')
         gram_text = gram_text.replace('Femininum','die')
         gram_text = gram_text.replace('Neutrum','das')
-        return gram_text
+        self.grammar = gram_text
+            
+    def processFrequency(self):
+        self.frequency = len(self.main_soup.find_all('div', {'class':'word-frequency-active'}))
 
-    def getFrequency(self):
-        return len(self.main_soup.find_all('div', {'class':'word-frequency-active'}))
-
-    def loadMeanings(self):
+    def processMeanings(self):
         self.meanings = []
-
         meanings_soup = self.main_soup.find_all('div', {'class':'dwdswb-lesart'})
-        for meaning_soup in meanings_soup:
-            meaning = {}
+        for cur_meaning_soup in meanings_soup:
+            cur_meaning = {}
 
-            # Laebls
-            meaning['id'] = meaning_soup['id']
-            parent_id = meaning['id'][:-2]
-
-            parent_meaning = find_parent(self.meanings, parent_id)
-            if parent_meaning is not None:
-                meaning['label_parent'] = parent_meaning['label_base']
-
-            id_segments = meaning_soup['id'].split('-')
-            label_segments = [id_segments[2]]
-
-            if len(id_segments) > 3:
-                sub_id = id_segments[3]
-                label_segments.append(chr(96+int(sub_id)))
-                if len(id_segments) > 4:
-                    sub_sub_id = id_segments[4]
-                    label_segments.append(chr(944+int(sub_sub_id)))
-
-            meaning['indent'] = len(label_segments)-1
-
-            n_label = meaning_soup.find('div' ,{'class':'dwdswb-lesart-n'}).text
-            if n_label == '':
-                n_label = '●'
-            base_label = n_label.replace('.','')
-            base_label = base_label.replace(')','')
-            if len(meaning_soup) < 2:
-                meaning['label_base'] = '-'
-                meaning['label_definition'] = '-'
-                meaning['label_example'] = '[-] '
-            else:
-                meaning['label_base'] = base_label
-                meaning['label_definition'] = n_label
-                if 'label_parent' in meaning:
-                    meaning['label_full'] = parent_meaning['label_full']+'.'+base_label
-                else:
-                    meaning['label_full'] = base_label
-                meaning['label_example'] = '['+meaning['label_full']+'] '
-
-            n_label = meaning_soup.find('div' ,{'class':'dwdswb-lesart-n'}).text
-            base_label = n_label.replace('.','')
-            base_label = base_label.replace(')','')
-
-            content_soup = meaning_soup.find('div',{'class':'dwdswb-lesart-content'})
+            # Labels
+            cur_meaning = self.processLabels(cur_meaning_soup, cur_meaning)
 
             # Definition
-            def_soup = content_soup.find('div', {'class':'dwdswb-lesart-def'})
-
-            definition_text = ""
-
-            diasys_soup = def_soup.find('span', {'class':'dwdswb-diasystematik'})
-            if diasys_soup is not None:
-                definition_text = '['+diasys_soup.text+'] '+definition_text
-
-            syntac_soup = def_soup.find('span', {'class':'dwdswb-syntagmatik'})
-            if syntac_soup is not None:
-                definition_text = definition_text+' '+syntac_soup.text
-
-            specification_soup = def_soup.find('span', {'class':'dwdswb-definition-spezifizierung'})
-            if specification_soup is not None:
-                spec_text = specification_soup.text
-                definition_text = definition_text+' <'+spec_text+'>'
-
-            definition_list = def_soup.find_all('span', {'class':'dwdswb-definition'})
-            if definition_list:
-                cur_text = ''
-                for definition_soup in definition_list:
-                    cur_text += definition_soup.text
-                definition_text = definition_text+' '+cur_text
-
-            ftla_soup = content_soup.find('div', {'class':'dwdswb-ft-la'})
-            if ftla_soup is not None:
-                definition_text = definition_text+' {'+ftla_soup.text+'}'
-
-            verweise_soup = def_soup.find('span', {'class':'dwdswb-verweise'})
-            if verweise_soup is not None:
-                definition_text = definition_text+' '+verweise_soup.text
-
-
-            definition_text = definition_text.replace('⟩', '⟩ ')
-            definition_text = remove_extra_whitespace(definition_text)
-            if definition_text is None:
-                definition_text = '...'
-            meaning['definition'] = definition_text
-
+            cur_meaning = self.processDefinitions(cur_meaning_soup, cur_meaning)
+            
             # Kollokationen
-            kollokationen_soup = content_soup.find('div', {'class':'dwdswb-kollokationen'}, recursive=False)
-            if kollokationen_soup is not None:
-                koll_list = kollokationen_soup.find_all('div', {'class':'dwdswb-kollokation'})
-                if len(koll_list) > 0:
-                    meaning['collocations'] = []
-                for koll in koll_list:
-                    relation_text = koll.find('span', {'class':'dwdswb-relation'}).text
-                    relation_text = relation_text.replace(': ','')
-                    beleg_soup_list = koll.find_all('span', {'class':'dwdswb-belegtext'})
-                    beleg_list = []
-                    for beleg_soup in beleg_soup_list:
-                        beleg_list.append(beleg_soup.text)
-                    beleg_text = '; '.join(beleg_list)
-
-                    koll_text = '{'+relation_text+'}\t'+beleg_text
-
-                    koll_text = remove_extra_whitespace(koll_text)
-                    meaning['collocations'].append(koll_text)
-
+            cur_meaning = self.processCollocations(cur_meaning_soup, cur_meaning)
+            
             # Examples
-            example_soup = content_soup.find('div', {'class':'dwdswb-verwendungsbeispiele'}, recursive=False)
-            if example_soup is not None:
-                example_komp_list = example_soup.find_all('div', {'class':'dwdswb-kompetenzbeispiel'})
-                example_belg_list = example_soup.find_all('div', {'class':'dwdswb-beleg'})
-                example_list = example_komp_list + example_belg_list
-                if len(example_list) > 0:
-                    meaning['examples'] = []
-                for example_soup in example_list:
-                    example_text = ""
-
-                    example_diasys_soup = example_soup.find('span', {'class':'dwdswb-diasystematik'})
-                    if example_diasys_soup is not None:
-                        example_text = '['+example_diasys_soup.text+'] '+example_text
-                    example_text = example_text+example_soup.find('span', {'class':'dwdswb-belegtext'}).text
-
-                    example_text = remove_extra_whitespace(example_text)
-                    meaning['examples'].append(example_text)
+            cur_meaning = self.processExamples(cur_meaning_soup, cur_meaning)
 
             # Add to list
-            self.meanings.append(meaning)
+            self.meanings.append(cur_meaning)
+            
+    def processLabels(self, meaning_soup, ret_meaning_dict):
+        ret_meaning_dict['id'] = meaning_soup['id']
+        parent_id = ret_meaning_dict['id'][:-2]
 
+        parent_meaning = findParent(self.meanings, parent_id)
+        if parent_meaning is not None:
+            ret_meaning_dict['label_parent'] = parent_meaning['label_base']
 
-    def getDefinition(self):
+        id_segments = meaning_soup['id'].split('-')
+        ret_meaning_dict['indent'] = len(id_segments)-3
+
+        n_label = meaning_soup.find('div' ,{'class':'dwdswb-lesart-n'}).text
+        if n_label == '':
+            n_label = '●'
+            
+        base_label = n_label.replace('.','')
+        base_label = base_label.replace(')','')
+
+        ret_meaning_dict['label_base'] = base_label
+        ret_meaning_dict['label_definition'] = n_label
+        if 'label_parent' in ret_meaning_dict:
+            ret_meaning_dict['label_full'] = parent_meaning['label_full']+'.'+base_label
+        else:
+            ret_meaning_dict['label_full'] = base_label
+        ret_meaning_dict['label_example'] = '['+ret_meaning_dict['label_full']+'] '
+
+        return ret_meaning_dict
+
+    def processDefinitions(self, meaning_soup, ret_meaning_dict):
+        content_soup = meaning_soup.find('div',{'class':'dwdswb-lesart-content'})
+        def_soup = content_soup.find('div', {'class':'dwdswb-lesart-def'})
+
+        definition_text = ""
+
+        diasys_soup = def_soup.find('span', {'class':'dwdswb-diasystematik'})
+        if diasys_soup is not None:
+            definition_text = '['+diasys_soup.text+'] '+definition_text
+
+        freq_soup = def_soup.find('span', {'class':'dwdswb-frequenzangabe'})
+        if freq_soup is not None:
+            definition_text = '['+freq_soup.text+'] '+definition_text
+            
+        syntac_soup = def_soup.find('span', {'class':'dwdswb-syntagmatik'})
+        if syntac_soup is not None:
+            definition_text = definition_text+' '+syntac_soup.text
+            
+        specification_soup = def_soup.find('span', {'class':'dwdswb-definition-spezifizierung'})
+        if specification_soup is not None:
+            definition_text = definition_text+' <'+specification_soup.text+'>'
+
+        definition_list = def_soup.find_all('span', {'class':'dwdswb-definition'})
+        if definition_list:
+            cur_text = ''
+            for definition_soup in definition_list:
+                cur_text += definition_soup.text
+            definition_text = definition_text+' '+cur_text
+
+        ftla_soup = content_soup.find('div', {'class':'dwdswb-ft-la'}, recursive=False)
+        if ftla_soup is not None:
+            definition_text = definition_text+' {'+ftla_soup.text+'}'
+
+        verweise_soup = content_soup.find('span', {'class':'dwdswb-verweis'}, recursive=False)
+        if verweise_soup is not None:
+            definition_text = definition_text+' ('+verweise_soup.text+')'
+        else:
+            verweise_soup = content_soup.find('div', {'class':'dwdswb-verweise'}, recursive=False)
+            if verweise_soup is not None:
+                definition_text = definition_text+' ('+verweise_soup.text+')'
+
+        phrasem_soup = content_soup.find('div', {'class':'dwdswb-phraseme'}, recursive=False)
+        if phrasem_soup is not None:
+            definition_text = definition_text+' '+phrasem_soup.text
+
+        definition_text = definition_text.replace('⟩', '⟩ ')
+        definition_text = removeExtraWhitespace(definition_text)
+        if definition_text is None:
+            definition_text = '...'
+        ret_meaning_dict['definition'] = definition_text
+        return ret_meaning_dict
+
+    def processCollocations(self, meaning_soup, ret_meaning_dict):
+        content_soup = meaning_soup.find('div',{'class':'dwdswb-lesart-content'})
+        kollokationen_soup = content_soup.find('div', {'class':'dwdswb-kollokationen'}, recursive=False)
+        if kollokationen_soup is not None:
+            koll_list = kollokationen_soup.find_all('div', {'class':'dwdswb-kollokation'})
+            if len(koll_list) > 0:
+                ret_meaning_dict['collocations'] = []
+            for koll in koll_list:
+                relation_text = koll.find('span', {'class':'dwdswb-relation'}).text
+                relation_text = relation_text.replace(': ','')
+                beleg_soup_list = koll.find_all('span', {'class':'dwdswb-belegtext'})
+                beleg_list = []
+                for beleg_soup in beleg_soup_list:
+                    beleg_list.append(beleg_soup.text)
+                beleg_text = '; '.join(beleg_list)
+                
+                koll_text = '{'+relation_text+'}\t'+beleg_text
+                
+                koll_text = removeExtraWhitespace(koll_text)
+                ret_meaning_dict['collocations'].append(koll_text)
+        return ret_meaning_dict
+
+    def processExamples(self, meaning_soup, ret_meaning_dict):
+        content_soup = meaning_soup.find('div',{'class':'dwdswb-lesart-content'})
+        example_soup = content_soup.find('div', {'class':'dwdswb-verwendungsbeispiele'}, recursive=False)
+        if example_soup is not None:
+            example_komp_list = example_soup.find_all('div', {'class':'dwdswb-kompetenzbeispiel'})
+            example_belg_list = example_soup.find_all('div', {'class':'dwdswb-beleg'})
+            example_list = example_komp_list + example_belg_list
+            if len(example_list) > 0:
+                ret_meaning_dict['examples'] = []
+            for example_soup in example_list:
+                example_text = ""
+                
+                example_diasys_soup = example_soup.find('span', {'class':'dwdswb-diasystematik'})
+                if example_diasys_soup is not None:
+                    example_text = '['+example_diasys_soup.text+'] '+example_text
+                example_text = example_text+example_soup.find('span', {'class':'dwdswb-belegtext'}).text
+                
+                example_text = removeExtraWhitespace(example_text)
+                ret_meaning_dict['examples'].append(example_text)
+        return ret_meaning_dict
+    
+    def getGrammar(self):
+        return self.grammar+'\n'
+
+    def getFrequency(self):
+        return 'h'+str(self.frequency)+'\n'
+
+    def getDefinitions(self):
         ret_string = ''
         for meaning in self.meanings:
-            ret_string += tab_space()*meaning['indent']+meaning['label_definition'] + ' ' + meaning['definition']+'\n'
+            ret_string += tabSpace()*meaning['indent']+meaning['label_definition'] + ' ' + meaning['definition']+'\n'
         return ret_string
 
     def getExamples(self, example_number):
@@ -195,7 +209,7 @@ class Parser:
             if 'collocations' in meaning:
                 ret_string += meaning['label_example']+'Kollokationen:\n'
                 for kol in meaning['collocations']:
-                    ret_string += ' '*4+kol+'\n'
+                    ret_string += tabSpace()+kol+'\n'
 
             if 'examples' in meaning:
                 for jj, example in enumerate(meaning['examples']):

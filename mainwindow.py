@@ -6,8 +6,7 @@ from PySide6.QtCore import SIGNAL, QObject
 
 # Important:
 # You need to run the following command to generate the ui_form.py file
-#     pyside6-uic mainwindow.ui -o ui_form.py, or
-#     pyside2-uic form.ui -o ui_form.py
+#     pyside6-uic mainwindow.ui -o ui_form.py
 from ui_form import Ui_MainWindow
 
 import Parser
@@ -29,13 +28,13 @@ class MainWindow(QMainWindow):
         self.clearAll()
 
         word = self.ui.lineEdit_vocabulary.text()
-        parser.load(word)
+        parser.process(word)
 
         self.ui.plainTextEdit_grammar.appendPlainText(parser.getGrammar())
 
-        self.ui.plainTextEdit_meaning.appendPlainText(parser.getDefinition())
+        self.ui.plainTextEdit_meaning.appendPlainText(parser.getDefinitions())
 
-        self.ui.plainTextEdit_examples.appendPlainText(parser.getExamples(3))
+        self.ui.plainTextEdit_examples.appendPlainText(parser.getExamples(2))
 
         print('Processed')
 
