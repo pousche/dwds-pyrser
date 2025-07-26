@@ -192,31 +192,35 @@ class Parser:
         return ret_meaning_dict
     
     def getGrammar(self):
-        return self.grammar+'\n'
+        return self.grammar
 
     def getFrequency(self):
-        return 'h'+str(self.frequency)+'\n'
+        return 'h'+str(self.frequency)
 
     def getDefinitions(self):
         ret_string = ''
+        formatted_meaning_list = []
         for meaning in self.meanings:
-            ret_string += tabSpace()*meaning['indent']+meaning['label_definition'] + ' ' + meaning['definition']+'\n'
+            formatted_meaning_list.append( tabSpace()*meaning['indent']+meaning['label_definition'] + ' ' + meaning['definition'] )
+        ret_string = '\n'.join(formatted_meaning_list)
         return ret_string
 
     def getExamples(self, example_number):
         ret_string = ''
+        formatted_examples_list = []
         for meaning in self.meanings:
             if 'collocations' in meaning:
-                ret_string += meaning['label_example']+'Kollokationen:\n'
+                formatted_examples_list.append( meaning['label_example']+'Kollokationen:' )
                 for kol in meaning['collocations']:
-                    ret_string += tabSpace()+kol+'\n'
+                    formatted_examples_list.append( tabSpace()+kol )
 
             if 'examples' in meaning:
                 for jj, example in enumerate(meaning['examples']):
                     if jj == example_number:
                         break;
-                    ret_string += meaning['label_example']+example+'\n'
+                    formatted_examples_list.append( meaning['label_example']+example )
 
             if 'collocations' in meaning:
-                ret_string += '\n'
+                formatted_examples_list.append( '\n' )
+        ret_string = '\n'.join(formatted_examples_list)
         return ret_string
