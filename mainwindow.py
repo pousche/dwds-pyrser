@@ -17,37 +17,37 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        QObject.connect(self.ui.button_process, SIGNAL ('clicked()'),
+        QObject.connect(self.ui.vocab_button_process, SIGNAL ('clicked()'),
             lambda mw=self: MainWindow.processWord(mw))
 
         # QObject.connect(self.ui.slider_example, SIGNAL ('valueChanged(value)'), self.processExamples)
-        self.ui.slider_example.valueChanged.connect(self.processExamples)
+        self.ui.examples_slider.valueChanged.connect(self.processExamples)
 
 
     def processWord(self):
         self.clearAll()
 
-        word = self.ui.lineEdit_vocabulary.text()
+        word = self.ui.vocab_lineEdit.text()
         parser.process(word)
 
-        self.ui.plainTextEdit_grammar.appendPlainText(parser.getGrammar())
+        self.ui.grammar_plainTextEdit.appendPlainText(parser.getGrammar())
 
-        self.ui.plainTextEdit_meaning.appendPlainText(parser.getDefinitions())
+        self.ui.meaning_plainTextEdit.appendPlainText(parser.getDefinitions())
 
-        self.ui.plainTextEdit_examples.appendPlainText(parser.getExamples(2))
+        self.ui.examples_plainTextEdit.appendPlainText(parser.getExamples(2))
 
         print('Processed')
 
     def processExamples(self, value):
-        self.ui.plainTextEdit_examples.clear()
-        self.ui.plainTextEdit_examples.appendPlainText(parser.getExamples(value))
+        self.ui.examples_plainTextEdit.clear()
+        self.ui.examples_plainTextEdit.appendPlainText(parser.getExamples(value))
         print('Processed examples')
 
 
     def clearAll(self):
-        self.ui.plainTextEdit_grammar.clear()
-        self.ui.plainTextEdit_meaning.clear()
-        self.ui.plainTextEdit_examples.clear()
+        self.ui.grammar_plainTextEdit.clear()
+        self.ui.meaning_plainTextEdit.clear()
+        self.ui.examples_plainTextEdit.clear()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
