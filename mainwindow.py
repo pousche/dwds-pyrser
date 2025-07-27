@@ -7,6 +7,7 @@ from PySide6.QtCore import SIGNAL, QObject
 # Important:
 # You need to run the following command to generate the ui_form.py file
 #     pyside6-uic mainwindow.ui -o ui_form.py
+#     pyside6-deploy mainwindow.py
 from ui_form import Ui_MainWindow
 
 import Parser
