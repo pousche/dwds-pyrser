@@ -221,6 +221,6 @@ class Parser:
                     formatted_examples_list.append( meaning['label_example']+example )
 
             if 'collocations' in meaning:
-                formatted_examples_list.append( '\n' )
+                formatted_examples_list[-1] += '\n'
         ret_string = '\n'.join(formatted_examples_list)
         return ret_string

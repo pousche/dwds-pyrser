@@ -55,18 +55,24 @@ class MainWindow(QMainWindow):
 
         word = self.ui.vocab_lineEdit.text()
         parser.process(word)
+        example_count = 2
 
         self.ui.grammar_plainTextEdit.appendPlainText(parser.getGrammar())
 
         self.ui.meaning_plainTextEdit.appendPlainText(parser.getDefinitions())
 
-        self.ui.examples_plainTextEdit.appendPlainText(parser.getExamples(2))
+        self.ui.examples_plainTextEdit.appendPlainText(parser.getExamples(example_count))
+
+        self.ui.examples_label_tags.setText(parser.getFrequency())
+
+        self.ui.examples_label_count.setText(str(example_count))
 
         print('Processed')
 
     def processExamples(self, value):
         self.ui.examples_plainTextEdit.clear()
         self.ui.examples_plainTextEdit.appendPlainText(parser.getExamples(value))
+        self.ui.examples_label_count.setText(str(value))
         print('Processed examples')
 
 
