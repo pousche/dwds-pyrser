@@ -1,22 +1,22 @@
 [app]
 
 # title of your application
-title = dwds_parser
+title = dwds_parser_v1.1.1
 
 # project root directory. default = The parent directory of input_file
-project_dir = C:\Portables\parser\dwds_pyrser
+project_dir = ..\parser\dwds_pyrser
 
 # source file entry point path. default = main.py
 input_file = C:\Portables\parser\dwds_pyrser\mainwindow.py
 
 # directory where the executable output is generated
-exec_directory = .
+exec_directory = ..\
 
 # path to the project file relative to project_dir
 project_file = pyproject.toml
 
 # application icon
-icon = C:\Portables\parser\dwds_pyrser\.qtcreator\Python_3_13_0venv\Lib\site-packages\PySide6\scripts\deploy_lib\pyside_icon.ico
+icon = resources\icon.ico
 
 [python]
 
@@ -39,7 +39,7 @@ qml_files =
 excluded_qml_plugins = 
 
 # qt modules used. comma separated
-modules = Core,Widgets,Gui
+modules = 
 
 # qt plugins used by the application. only relevant for desktop deployment
 # for qt plugins used in android application see [android][plugins]
@@ -67,7 +67,7 @@ macos.permissions =
 mode = onefile
 
 # specify any extra nuitka arguments
-extra_args = --quiet --noinclude-qt-translations
+extra_args = --quiet --noinclude-qt-translations --windows-console-mode=disable
 
 [buildozer]
 

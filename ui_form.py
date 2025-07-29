@@ -208,7 +208,7 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"DWDS Parser", None))
         self.vocab_label.setText(QCoreApplication.translate("MainWindow", u"Vokabular", None))
         self.vocab_lineEdit.setText(QCoreApplication.translate("MainWindow", u"Buch", None))
         self.vocab_button_process.setText(QCoreApplication.translate("MainWindow", u"Process", None))

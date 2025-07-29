@@ -19,18 +19,21 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
 
         QObject.connect(self.ui.vocab_button_process, SIGNAL ('clicked()'),
-            lambda mw=self: MainWindow.processWord(mw))
+        lambda mw=self: MainWindow.processWord(mw))
+        self.ui.vocab_lineEdit.editingFinished.connect(self.processWord)
 
         QObject.connect(self.ui.grammar_button_copy, SIGNAL ('clicked()'),
-            lambda mw=self: MainWindow.copyGrammer(mw))
+        lambda mw=self: MainWindow.copyGrammer(mw))
 
         QObject.connect(self.ui.meaning_button_copy, SIGNAL ('clicked()'),
-            lambda mw=self: MainWindow.copyMeanings(mw))
+        lambda mw=self: MainWindow.copyMeanings(mw))
 
         QObject.connect(self.ui.examples_button_copy, SIGNAL ('clicked()'),
-            lambda mw=self: MainWindow.copyExamples(mw))
+        lambda mw=self: MainWindow.copyExamples(mw))
 
-        # QObject.connect(self.ui.slider_example, SIGNAL ('valueChanged(value)'), self.processExamples)
+        QObject.connect(self.ui.examples_button_copy, SIGNAL ('clicked()'),
+        lambda mw=self: MainWindow.copyThesaurus(mw))
+
         self.ui.examples_slider.valueChanged.connect(self.processExamples)
 
         minimum_width_left = 70
@@ -50,6 +53,8 @@ class MainWindow(QMainWindow):
         self.ui.splitter.setStretchFactor(0,1)
         self.ui.splitter.setStretchFactor(1,5)
         self.ui.splitter.setStretchFactor(2,5)
+        self.ui.splitter.setStretchFactor(3,5)
+        return
 
 
     def processWord(self):
@@ -69,31 +74,44 @@ class MainWindow(QMainWindow):
 
         self.ui.examples_label_count.setText(str(example_count))
 
-        print('Processed')
+        self.ui.thesaurus_plainTextEdit.appendPlainText(parser.getThesaurus())
+
+        return
 
     def processExamples(self, value):
         self.ui.examples_plainTextEdit.clear()
         self.ui.examples_plainTextEdit.appendPlainText(parser.getExamples(value))
         self.ui.examples_label_count.setText(str(value))
-        print('Processed examples')
-
+        return
 
     def clearAll(self):
         self.ui.grammar_plainTextEdit.clear()
         self.ui.meaning_plainTextEdit.clear()
         self.ui.examples_plainTextEdit.clear()
+        self.ui.thesaurus_plainTextEdit.clear()
+        return
 
     def copyGrammer(self):
         clipboard = QApplication.clipboard()
         clipboard.setText(self.ui.grammar_plainTextEdit.toPlainText())
+        return
 
     def copyMeanings(self):
         clipboard = QApplication.clipboard()
         clipboard.setText(self.ui.meaning_plainTextEdit.toPlainText())
+        return
 
     def copyExamples(self):
         clipboard = QApplication.clipboard()
         clipboard.setText(self.ui.examples_plainTextEdit.toPlainText())
+        return
+
+    def copyThesaurus(self):
+        clipboard = QApplication.clipboard()
+        clipboard.setText(self.ui.examples_plainTextEdit.toPlainText())
+        return
+
+    pass
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
