@@ -33,6 +33,7 @@ class Parser:
         self.processGarammer()
         self.processFrequency()
         self.processMeanings()
+        self.processThesaurus()
 
 
     def processGarammer(self):
@@ -67,6 +68,7 @@ class Parser:
 
             # Add to list
             self.meanings.append(cur_meaning)
+
             
     def processLabels(self, meaning_soup, ret_meaning_dict):
         ret_meaning_dict['id'] = meaning_soup['id']
@@ -191,6 +193,49 @@ class Parser:
                 ret_meaning_dict['examples'].append(example_text)
         return ret_meaning_dict
     
+    def processThesaurus(self):
+        self.thesaurus = []
+
+        thesaurus_soup = self.main_soup.find('div', {'data-content-piece':'Thesaurus'})
+        if thesaurus_soup is None:
+            return
+
+        thesaurus_list = thesaurus_soup.find_all('div', {'class':'ot-synset-block'})
+        if not thesaurus_list:
+            return
+
+        for thesaurus_group_soup in thesaurus_list:
+            thesaurus_header = thesaurus_group_soup.find('div', {'style':'position:relative'})
+            thesaurus_text = thesaurus_header.text
+            thesaurus_text = thesaurus_text.strip()
+            thesaurus_text = thesaurus_text.replace('\n','')
+
+            atrributes = thesaurus_group_soup.find_all('span', {'class':'ot-diasystematik'})
+            atrributes = [at.text.strip() for at in atrributes]
+            atrributes = list(set(atrributes))
+            atrributes = sorted(atrributes, key=len, reverse=True)
+
+            thesaurus_text_sub_list = thesaurus_text.split('●')
+            thesaurus_text_processed_list = []
+            for thesaurus_text_sub in thesaurus_text_sub_list:
+                thesaurus_text_sub_sub_list = thesaurus_text_sub.split('·')
+                thesaurus_words = []
+                for thesaurus_word in thesaurus_text_sub_sub_list:
+                    for at in atrributes:
+                        if at in thesaurus_word:
+                            thesaurus_word = thesaurus_word.replace(at, '['+at+']')
+                            break
+                    thesaurus_words.append(thesaurus_word.strip())
+                thesaurus_text_processed_list.append(' - '.join(thesaurus_words))
+            thesaurus_text = ' | '.join(thesaurus_text_processed_list)
+
+            thesaurus_title = thesaurus_group_soup.find('span', {'class':'ot-diasystematik'}, recursive=False)
+            if thesaurus_title is not None:
+                thesaurus_text = '['+thesaurus_title.text+'] '+thesaurus_text
+
+            self.thesaurus.append(thesaurus_text)
+        return
+
     def getGrammar(self):
         return self.grammar
 
@@ -224,3 +269,10 @@ class Parser:
                 formatted_examples_list[-1] += '\n'
         ret_string = '\n'.join(formatted_examples_list)
         return ret_string
+
+    def getThesaurus(self):
+        ret_thesaurus = []
+        for thesaurus_block in self.thesaurus:
+            ret_thesaurus.append('➤ '+thesaurus_block)
+        return '\n'.join(ret_thesaurus)
+

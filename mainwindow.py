@@ -38,12 +38,14 @@ class MainWindow(QMainWindow):
         self.ui.grammar_label.setMinimumWidth(minimum_width_left)
         self.ui.meaning_label.setMinimumWidth(minimum_width_left)
         self.ui.examples_label.setMinimumWidth(minimum_width_left)
+        self.ui.thesaurus_label.setMinimumWidth(minimum_width_left)
 
         minimum_width_right = 100
         self.ui.vocab_button_process.setMinimumWidth(minimum_width_right)
         self.ui.grammar_button_copy.setMinimumWidth(minimum_width_right)
         self.ui.meaning_button_copy.setMinimumWidth(minimum_width_right)
         self.ui.examples_button_copy.setMinimumWidth(minimum_width_right)
+        self.ui.thesaurus_button_copy.setMinimumWidth(minimum_width_right)
 
         self.ui.splitter.setStretchFactor(0,1)
         self.ui.splitter.setStretchFactor(1,5)
