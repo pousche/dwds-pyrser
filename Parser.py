@@ -34,6 +34,7 @@ class Parser:
         self.processFrequency()
         self.processMeanings()
         self.processThesaurus()
+        print('Processed')
 
 
     def processGarammer(self):

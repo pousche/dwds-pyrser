@@ -31,7 +31,7 @@ class MainWindow(QMainWindow):
         QObject.connect(self.ui.examples_button_copy, SIGNAL ('clicked()'),
         lambda mw=self: MainWindow.copyExamples(mw))
 
-        QObject.connect(self.ui.examples_button_copy, SIGNAL ('clicked()'),
+        QObject.connect(self.ui.thesaurus_button_copy, SIGNAL ('clicked()'),
         lambda mw=self: MainWindow.copyThesaurus(mw))
 
         self.ui.examples_slider.valueChanged.connect(self.processExamples)
@@ -108,7 +108,7 @@ class MainWindow(QMainWindow):
 
     def copyThesaurus(self):
         clipboard = QApplication.clipboard()
-        clipboard.setText(self.ui.examples_plainTextEdit.toPlainText())
+        clipboard.setText(self.ui.thesaurus_plainTextEdit.toPlainText())
         return
 
     pass
