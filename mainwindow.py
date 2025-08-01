@@ -70,7 +70,7 @@ class MainWindow(QMainWindow):
 
         self.ui.examples_plainTextEdit.appendPlainText(parser.getExamples(example_count))
 
-        self.ui.examples_label_tags.setText(parser.getFrequency())
+        self.ui.examples_label_tags.setText(parser.getTags())
 
         self.ui.examples_label_count.setText(str(example_count))
 

@@ -33,9 +33,10 @@ class Parser:
         self.processGarammer()
         self.processFrequency()
         self.processMeanings()
+        self.processGoethe()
         self.processThesaurus()
         print('Processed')
-
+        return
 
     def processGarammer(self):
         gram_soup = self.main_soup.find('div', {'class':'dwdswb-ft-block'})
@@ -45,9 +46,11 @@ class Parser:
         gram_text = gram_text.replace('Femininum','die')
         gram_text = gram_text.replace('Neutrum','das')
         self.grammar = gram_text
+        return
             
     def processFrequency(self):
         self.frequency = len(self.main_soup.find_all('div', {'class':'word-frequency-active'}))
+        return
 
     def processMeanings(self):
         self.meanings = []
@@ -69,7 +72,7 @@ class Parser:
 
             # Add to list
             self.meanings.append(cur_meaning)
-
+        return
             
     def processLabels(self, meaning_soup, ret_meaning_dict):
         ret_meaning_dict['id'] = meaning_soup['id']
@@ -111,7 +114,9 @@ class Parser:
 
         freq_soup = def_soup.find('span', {'class':'dwdswb-frequenzangabe'})
         if freq_soup is not None:
-            definition_text = '['+freq_soup.text+'] '+definition_text
+            freq_text = freq_soup.text.strip()
+            freq_text = freq_text.replace(',','')
+            definition_text = '['+freq_text+'] '+definition_text
             
         syntac_soup = def_soup.find('span', {'class':'dwdswb-syntagmatik'})
         if syntac_soup is not None:
@@ -194,6 +199,17 @@ class Parser:
                 ret_meaning_dict['examples'].append(example_text)
         return ret_meaning_dict
     
+    def processGoethe(self):
+        self.goethe = ''
+        goethe_soup = self.main_soup.find('p',{'class':'goethe sans'})
+        if goethe_soup is not None:
+            if 'Goethe-Zertifikat B1' in goethe_soup.text:
+                self.goethe = 'B1'
+            elif 'Goethe-Zertifikat A2' in goethe_soup.text:
+                self.goethe = 'A2'
+            elif 'Goethe-Zertifikat A1' in goethe_soup.text:
+                self.goethe = 'A1'
+
     def processThesaurus(self):
         self.thesaurus = []
 
@@ -207,6 +223,8 @@ class Parser:
 
         for thesaurus_group_soup in thesaurus_list:
             thesaurus_header = thesaurus_group_soup.find('div', {'style':'position:relative'})
+            if not thesaurus_header:
+                continue
             thesaurus_text = thesaurus_header.text
             thesaurus_text = thesaurus_text.strip()
             thesaurus_text = thesaurus_text.replace('\n','')
@@ -242,6 +260,12 @@ class Parser:
 
     def getFrequency(self):
         return 'h'+str(self.frequency)
+
+    def getTags(self):
+        ret_tags = 'h'+str(self.frequency)
+        if self.goethe != '':
+            ret_tags += ', '+self.goethe
+        return ret_tags
 
     def getDefinitions(self):
         ret_string = ''
