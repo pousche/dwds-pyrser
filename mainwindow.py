@@ -1,22 +1,28 @@
 # This Python file uses the following encoding: utf-8
 import sys
 
-from PySide6.QtWidgets import QApplication, QMainWindow
+from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PySide6.QtCore import SIGNAL, QObject
 
 # Important:
 # You need to run the following command to generate the ui_form.py file
 #     pyside6-uic mainwindow.ui -o ui_form.py
-#     pyside6-deploy mainwindow.py
 from ui_form import Ui_MainWindow
 
 import Parser
+import BuildTime as bt
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+
+        menubar = self.menuBar()
+        menu = menubar.addMenu('Help')
+        about_action = menu.addAction("About")
+        about_action.setStatusTip("Show build information about the program.")
+        about_action.triggered.connect(self.showAbout)
 
         QObject.connect(self.ui.vocab_button_process, SIGNAL ('clicked()'),
         lambda mw=self: MainWindow.processWord(mw))
@@ -64,13 +70,15 @@ class MainWindow(QMainWindow):
         parser.process(word)
         example_count = 2
 
+        self.ui.examples_slider.setValue(example_count)
+
         self.ui.grammar_plainTextEdit.appendPlainText(parser.getGrammar())
 
         self.ui.meaning_plainTextEdit.appendPlainText(parser.getDefinitions())
 
         self.ui.examples_plainTextEdit.appendPlainText(parser.getExamples(example_count))
 
-        self.ui.examples_label_tags.setText(parser.getTags())
+        self.ui.label_tags.setText(parser.getTags())
 
         self.ui.examples_label_count.setText(str(example_count))
 
@@ -109,6 +117,16 @@ class MainWindow(QMainWindow):
     def copyThesaurus(self):
         clipboard = QApplication.clipboard()
         clipboard.setText(self.ui.thesaurus_plainTextEdit.toPlainText())
+        return
+
+    def showAbout(self):
+        build_time = bt.BuildTime()
+        about_box = QMessageBox()
+        about_box.setWindowTitle('About')
+        display_text = 'Version 1.2.0\n'
+        display_text += 'It was built on: '+build_time.get()
+        about_box.setText(display_text)
+        about_box.exec()
         return
 
     pass

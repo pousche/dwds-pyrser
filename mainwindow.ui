@@ -200,13 +200,6 @@
           </property>
          </spacer>
         </item>
-        <item row="3" column="2">
-         <widget class="QLabel" name="examples_label_tags">
-          <property name="text">
-           <string>Tags</string>
-          </property>
-         </widget>
-        </item>
         <item row="2" column="2">
          <widget class="QLabel" name="examples_label_count">
           <property name="text">
@@ -216,7 +209,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <layout class="QGridLayout" name="gridLayout_thesaurus">
         <item row="0" column="0">
          <widget class="QLabel" name="thesaurus_label">
@@ -232,6 +225,19 @@
           </property>
          </widget>
         </item>
+        <item row="1" column="2">
+         <spacer name="thesaurus_spacer_copy">
+          <property name="orientation">
+           <enum>Qt::Orientation::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
         <item row="1" column="0">
          <spacer name="thesaurus_spacer_label">
           <property name="orientation">
@@ -245,21 +251,15 @@
           </property>
          </spacer>
         </item>
-        <item row="0" column="1" rowspan="2">
-         <widget class="QPlainTextEdit" name="thesaurus_plainTextEdit"/>
+        <item row="2" column="2">
+         <widget class="QLabel" name="label_tags">
+          <property name="text">
+           <string>Tags</string>
+          </property>
+         </widget>
         </item>
-        <item row="1" column="2">
-         <spacer name="thesaurus_spacer_copy">
-          <property name="orientation">
-           <enum>Qt::Orientation::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
+        <item row="0" column="1" rowspan="3">
+         <widget class="QPlainTextEdit" name="thesaurus_plainTextEdit"/>
         </item>
        </layout>
       </widget>

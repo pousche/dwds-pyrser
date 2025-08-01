@@ -1,7 +1,7 @@
 [app]
 
 # title of your application
-title = dwds_parser_v1.1.1
+title = dwds_parser
 
 # project root directory. default = The parent directory of input_file
 project_dir = ..\parser\dwds_pyrser

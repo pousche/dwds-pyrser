@@ -149,11 +149,6 @@ class Ui_MainWindow(object):
 
         self.gridLayout_examples.addItem(self.examples_spacer_label, 1, 0, 4, 1)
 
-        self.examples_label_tags = QLabel(self.layoutWidget2)
-        self.examples_label_tags.setObjectName(u"examples_label_tags")
-
-        self.gridLayout_examples.addWidget(self.examples_label_tags, 3, 2, 1, 1)
-
         self.examples_label_count = QLabel(self.layoutWidget2)
         self.examples_label_count.setObjectName(u"examples_label_count")
 
@@ -161,35 +156,40 @@ class Ui_MainWindow(object):
 
         self.gridLayout_examples.setColumnStretch(1, 1)
         self.splitter.addWidget(self.layoutWidget2)
-        self.widget = QWidget(self.splitter)
-        self.widget.setObjectName(u"widget")
-        self.gridLayout_thesaurus = QGridLayout(self.widget)
+        self.layoutWidget3 = QWidget(self.splitter)
+        self.layoutWidget3.setObjectName(u"layoutWidget3")
+        self.gridLayout_thesaurus = QGridLayout(self.layoutWidget3)
         self.gridLayout_thesaurus.setObjectName(u"gridLayout_thesaurus")
         self.gridLayout_thesaurus.setContentsMargins(0, 0, 0, 0)
-        self.thesaurus_label = QLabel(self.widget)
+        self.thesaurus_label = QLabel(self.layoutWidget3)
         self.thesaurus_label.setObjectName(u"thesaurus_label")
 
         self.gridLayout_thesaurus.addWidget(self.thesaurus_label, 0, 0, 1, 1)
 
-        self.thesaurus_button_copy = QPushButton(self.widget)
+        self.thesaurus_button_copy = QPushButton(self.layoutWidget3)
         self.thesaurus_button_copy.setObjectName(u"thesaurus_button_copy")
 
         self.gridLayout_thesaurus.addWidget(self.thesaurus_button_copy, 0, 2, 1, 1)
-
-        self.thesaurus_spacer_label = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.gridLayout_thesaurus.addItem(self.thesaurus_spacer_label, 1, 0, 1, 1)
-
-        self.thesaurus_plainTextEdit = QPlainTextEdit(self.widget)
-        self.thesaurus_plainTextEdit.setObjectName(u"thesaurus_plainTextEdit")
-
-        self.gridLayout_thesaurus.addWidget(self.thesaurus_plainTextEdit, 0, 1, 2, 1)
 
         self.thesaurus_spacer_copy = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.gridLayout_thesaurus.addItem(self.thesaurus_spacer_copy, 1, 2, 1, 1)
 
-        self.splitter.addWidget(self.widget)
+        self.thesaurus_spacer_label = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.gridLayout_thesaurus.addItem(self.thesaurus_spacer_label, 1, 0, 1, 1)
+
+        self.label_tags = QLabel(self.layoutWidget3)
+        self.label_tags.setObjectName(u"label_tags")
+
+        self.gridLayout_thesaurus.addWidget(self.label_tags, 2, 2, 1, 1)
+
+        self.thesaurus_plainTextEdit = QPlainTextEdit(self.layoutWidget3)
+        self.thesaurus_plainTextEdit.setObjectName(u"thesaurus_plainTextEdit")
+
+        self.gridLayout_thesaurus.addWidget(self.thesaurus_plainTextEdit, 0, 1, 3, 1)
+
+        self.splitter.addWidget(self.layoutWidget3)
 
         self.verticalLayout.addWidget(self.splitter)
 
@@ -218,9 +218,9 @@ class Ui_MainWindow(object):
         self.meaning_button_copy.setText(QCoreApplication.translate("MainWindow", u"Copy", None))
         self.examples_label.setText(QCoreApplication.translate("MainWindow", u"Beispiele", None))
         self.examples_button_copy.setText(QCoreApplication.translate("MainWindow", u"Copy", None))
-        self.examples_label_tags.setText(QCoreApplication.translate("MainWindow", u"Tags", None))
         self.examples_label_count.setText(QCoreApplication.translate("MainWindow", u"Count", None))
         self.thesaurus_label.setText(QCoreApplication.translate("MainWindow", u"Verwandte", None))
         self.thesaurus_button_copy.setText(QCoreApplication.translate("MainWindow", u"Copy", None))
+        self.label_tags.setText(QCoreApplication.translate("MainWindow", u"Tags", None))
     # retranslateUi
 

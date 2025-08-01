@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 17.0.0, 2025-07-29T19:07:26. -->
+<!-- Written by QtCreator 17.0.0, 2025-08-01T17:05:19. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -107,11 +107,18 @@
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
+      <value type="QString" key="ProjectExplorer.ProcessStep.Arguments">mainwindow.ui -o ui_form.py</value>
+      <value type="QString" key="ProjectExplorer.ProcessStep.Command">C:\Portables\Parser\dwds_pyrser\.qtcreator\Python_3_13_0venv\Scripts\pyside6-uic.exe</value>
+      <value type="QString" key="ProjectExplorer.ProcessStep.WorkingDirectory">%{sourceDir}</value>
+      <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.ProcessStep</value>
+     </valuemap>
+     <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.1">
+      <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Python.PysideBuildStep</value>
       <value type="QString" key="Python.PySideProjectTool">C:\Portables\Parser\dwds_pyrser\.qtcreator\Python_3_13_0venv\Scripts\pyside6-project.exe</value>
       <value type="QString" key="Python.PySideUic">C:\Portables\Parser\dwds_pyrser\.qtcreator\Python_3_13_0venv\Scripts\pyside6-uic.exe</value>
      </valuemap>
-     <value type="qlonglong" key="ProjectExplorer.BuildStepList.StepsCount">1</value>
+     <value type="qlonglong" key="ProjectExplorer.BuildStepList.StepsCount">2</value>
      <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Build</value>
      <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Build</value>
      <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.BuildSteps.Build</value>

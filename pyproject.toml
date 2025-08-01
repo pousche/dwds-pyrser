@@ -2,4 +2,4 @@
 name = "PySide Widgets Project"
 
 [tool.pyside6-project]
-files = ["Parser.py", "mainwindow.py", "mainwindow.ui"]
+files = ["BuildTime.py", "Parser.py", "mainwindow.py", "mainwindow.ui"]
