@@ -24,24 +24,27 @@ class MainWindow(QMainWindow):
         about_action.setStatusTip("Show build information about the program.")
         about_action.triggered.connect(self.showAbout)
 
-        QObject.connect(self.ui.vocab_button_process, SIGNAL ('clicked()'),
-        lambda mw=self: MainWindow.processWord(mw))
+        self.initSignals()
+        self.initGui()
+
+        return
+
+    def initSignals(self):
+        QObject.connect(self.ui.vocab_button_process, SIGNAL ('clicked()'), lambda mw=self: MainWindow.processWord(mw))
         self.ui.vocab_lineEdit.editingFinished.connect(self.processWord)
 
-        QObject.connect(self.ui.grammar_button_copy, SIGNAL ('clicked()'),
-        lambda mw=self: MainWindow.copyGrammer(mw))
+        QObject.connect(self.ui.grammar_button_copy, SIGNAL ('clicked()'), lambda mw=self: MainWindow.copyGrammer(mw))
 
-        QObject.connect(self.ui.meaning_button_copy, SIGNAL ('clicked()'),
-        lambda mw=self: MainWindow.copyMeanings(mw))
+        QObject.connect(self.ui.meaning_button_copy, SIGNAL ('clicked()'), lambda mw=self: MainWindow.copyMeanings(mw))
 
-        QObject.connect(self.ui.examples_button_copy, SIGNAL ('clicked()'),
-        lambda mw=self: MainWindow.copyExamples(mw))
+        QObject.connect(self.ui.examples_button_copy, SIGNAL ('clicked()'), lambda mw=self: MainWindow.copyExamples(mw))
 
-        QObject.connect(self.ui.thesaurus_button_copy, SIGNAL ('clicked()'),
-        lambda mw=self: MainWindow.copyThesaurus(mw))
+        QObject.connect(self.ui.thesaurus_button_copy, SIGNAL ('clicked()'), lambda mw=self: MainWindow.copyThesaurus(mw))
 
         self.ui.examples_slider.valueChanged.connect(self.processExamples)
+        return
 
+    def initGui(self):
         minimum_width_left = 70
         self.ui.vocab_label.setMinimumWidth(minimum_width_left)
         self.ui.grammar_label.setMinimumWidth(minimum_width_left)
@@ -62,7 +65,6 @@ class MainWindow(QMainWindow):
         self.ui.splitter.setStretchFactor(3,5)
         return
 
-
     def processWord(self):
         self.clearAll()
 
@@ -70,17 +72,16 @@ class MainWindow(QMainWindow):
         parser.process(word)
         example_count = 2
 
-        self.ui.examples_slider.setValue(example_count)
+        if (self.ui.examples_slider.value() == example_count):
+            self.processExamples(example_count)
+        else:
+            self.ui.examples_slider.setValue(example_count)
 
         self.ui.grammar_plainTextEdit.appendPlainText(parser.getGrammar())
 
         self.ui.meaning_plainTextEdit.appendPlainText(parser.getDefinitions())
 
-        self.ui.examples_plainTextEdit.appendPlainText(parser.getExamples(example_count))
-
         self.ui.label_tags.setText(parser.getTags())
-
-        self.ui.examples_label_count.setText(str(example_count))
 
         self.ui.thesaurus_plainTextEdit.appendPlainText(parser.getThesaurus())
 
@@ -90,6 +91,7 @@ class MainWindow(QMainWindow):
         self.ui.examples_plainTextEdit.clear()
         self.ui.examples_plainTextEdit.appendPlainText(parser.getExamples(value))
         self.ui.examples_label_count.setText(str(value))
+
         return
 
     def clearAll(self):
@@ -123,7 +125,7 @@ class MainWindow(QMainWindow):
         build_time = bt.BuildTime()
         about_box = QMessageBox()
         about_box.setWindowTitle('About')
-        display_text = 'Version 1.2.0\n'
+        display_text = 'Version 1.2.1\n'
         display_text += 'It was built on: '+build_time.get()
         about_box.setText(display_text)
         about_box.exec()

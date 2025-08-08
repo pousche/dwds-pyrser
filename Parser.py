@@ -35,7 +35,6 @@ class Parser:
         self.processMeanings()
         self.processGoethe()
         self.processThesaurus()
-        print('Processed')
         return
 
     def processGarammer(self):
