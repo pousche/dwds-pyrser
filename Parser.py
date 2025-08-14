@@ -38,8 +38,12 @@ class Parser:
         return
 
     def processGarammer(self):
+        self.grammar = ''
         gram_soup = self.main_soup.find('div', {'class':'dwdswb-ft-block'})
-        gram_text = gram_soup.find('span',{'class':'dwdswb-ft-blocktext'}).text
+        gram_soup = gram_soup.find('span',{'class':'dwdswb-ft-blocktext'})
+        if gram_soup is None:
+            return
+        gram_text = gram_soup.text
         gram_text = gram_text.replace('·','|')
         gram_text = gram_text.replace('Maskulinum','der')
         gram_text = gram_text.replace('Femininum','die')

@@ -30,8 +30,9 @@ class MainWindow(QMainWindow):
         return
 
     def initSignals(self):
-        QObject.connect(self.ui.vocab_button_process, SIGNAL ('clicked()'), lambda mw=self: MainWindow.processWord(mw))
         self.ui.vocab_lineEdit.editingFinished.connect(self.processWord)
+
+        QObject.connect(self.ui.vocab_button_copy, SIGNAL ('clicked()'), lambda mw=self: MainWindow.copyWord(mw))
 
         QObject.connect(self.ui.grammar_button_copy, SIGNAL ('clicked()'), lambda mw=self: MainWindow.copyGrammer(mw))
 
@@ -53,7 +54,7 @@ class MainWindow(QMainWindow):
         self.ui.thesaurus_label.setMinimumWidth(minimum_width_left)
 
         minimum_width_right = 100
-        self.ui.vocab_button_process.setMinimumWidth(minimum_width_right)
+        self.ui.vocab_button_copy.setMinimumWidth(minimum_width_right)
         self.ui.grammar_button_copy.setMinimumWidth(minimum_width_right)
         self.ui.meaning_button_copy.setMinimumWidth(minimum_width_right)
         self.ui.examples_button_copy.setMinimumWidth(minimum_width_right)
@@ -101,6 +102,11 @@ class MainWindow(QMainWindow):
         self.ui.thesaurus_plainTextEdit.clear()
         return
 
+    def copyWord(self):
+        clipboard = QApplication.clipboard()
+        clipboard.setText(self.ui.vocab_lineEdit.text())
+        return
+
     def copyGrammer(self):
         clipboard = QApplication.clipboard()
         clipboard.setText(self.ui.grammar_plainTextEdit.toPlainText())
@@ -125,8 +131,8 @@ class MainWindow(QMainWindow):
         build_time = bt.BuildTime()
         about_box = QMessageBox()
         about_box.setWindowTitle('About')
-        display_text = 'Version 1.2.1\n'
-        display_text += 'It was built on: '+build_time.get()
+        display_text = 'Version 1.2.2\n'
+        display_text += 'Built on: '+build_time.get()
         about_box.setText(display_text)
         about_box.exec()
         return
