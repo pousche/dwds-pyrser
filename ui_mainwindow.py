@@ -41,10 +41,10 @@ class Ui_MainWindow(object):
 
         self.vocab_layout.addWidget(self.vocab_lineEdit)
 
-        self.vocab_button_process = QPushButton(self.centralwidget)
-        self.vocab_button_process.setObjectName(u"vocab_button_process")
+        self.vocab_button_copy = QPushButton(self.centralwidget)
+        self.vocab_button_copy.setObjectName(u"vocab_button_copy")
 
-        self.vocab_layout.addWidget(self.vocab_button_process)
+        self.vocab_layout.addWidget(self.vocab_button_copy)
 
 
         self.verticalLayout.addLayout(self.vocab_layout)
@@ -211,7 +211,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"DWDS Parser", None))
         self.vocab_label.setText(QCoreApplication.translate("MainWindow", u"Vokabular", None))
         self.vocab_lineEdit.setText(QCoreApplication.translate("MainWindow", u"Buch", None))
-        self.vocab_button_process.setText(QCoreApplication.translate("MainWindow", u"Process", None))
+        self.vocab_button_copy.setText(QCoreApplication.translate("MainWindow", u"Copy", None))
         self.grammar_button_copy.setText(QCoreApplication.translate("MainWindow", u"Copy", None))
         self.grammar_label.setText(QCoreApplication.translate("MainWindow", u"Grammatik", None))
         self.meaning_label.setText(QCoreApplication.translate("MainWindow", u"Bedeutung", None))
