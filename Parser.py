@@ -7,8 +7,7 @@ def removeExtraWhitespace(text_str):
     text_str = text_str.replace('\n', ' ')
     while '  ' in text_str:
         text_str = text_str.replace('  ', ' ')
-    while text_str[0] == ' ':
-        text_str = text_str[1:]
+    text_str = text_str.strip()
     
     return text_str
     
@@ -48,6 +47,7 @@ class Parser:
         gram_text = gram_text.replace('Maskulinum','der')
         gram_text = gram_text.replace('Femininum','die')
         gram_text = gram_text.replace('Neutrum','das')
+        gram_text = gram_text.replace('reflexiv','reflexiv | ')
         self.grammar = gram_text
         return
             
@@ -136,6 +136,10 @@ class Parser:
                 cur_text += definition_soup.text
             definition_text = definition_text+' '+cur_text
 
+        verweise_soup = def_soup.find('span', {'class':'dwdswb-verweise'}, recursive=False)
+        if verweise_soup is not None:
+            definition_text = definition_text+' '+verweise_soup.text
+
         ftla_soup = content_soup.find('div', {'class':'dwdswb-ft-la'}, recursive=False)
         if ftla_soup is not None:
             definition_text = definition_text+' {'+ftla_soup.text+'}'
@@ -156,6 +160,9 @@ class Parser:
         definition_text = removeExtraWhitespace(definition_text)
         if definition_text is None:
             definition_text = '...'
+        else:
+            definition_text = definition_text.replace('DWDS','')
+            definition_text = definition_text.replace('WDG','')
         ret_meaning_dict['definition'] = definition_text
         return ret_meaning_dict
 
@@ -283,7 +290,7 @@ class Parser:
         formatted_examples_list = []
         for meaning in self.meanings:
             if 'collocations' in meaning:
-                formatted_examples_list.append( meaning['label_example']+'Kollokationen:' )
+                formatted_examples_list.append( meaning['label_example']+'【 Kollokationen 】' )
                 for kol in meaning['collocations']:
                     formatted_examples_list.append( tabSpace()+kol )
 
@@ -293,8 +300,6 @@ class Parser:
                         break;
                     formatted_examples_list.append( meaning['label_example']+example )
 
-            if 'collocations' in meaning:
-                formatted_examples_list[-1] += '\n'
         ret_string = '\n'.join(formatted_examples_list)
         return ret_string
 
