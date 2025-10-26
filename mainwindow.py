@@ -140,7 +140,7 @@ class MainWindow(QMainWindow):
         build_time = bt.BuildTime()
         about_box = QMessageBox()
         about_box.setWindowTitle('About')
-        display_text = 'Version 1.2.3\n'
+        display_text = 'Version 1.2.4\n'
         display_text += 'Built on: '+build_time.get()
         about_box.setText(display_text)
         about_box.exec()

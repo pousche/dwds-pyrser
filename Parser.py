@@ -10,7 +10,12 @@ def removeExtraWhitespace(text_str):
     text_str = text_str.strip()
     
     return text_str
-    
+
+def replaceIfEmpty(text_str):
+    if text_str == '':
+        text_str = '-'
+    return text_str
+
 def tabSpace():
     return ' '*4
 
@@ -27,8 +32,10 @@ class Parser:
         link = "https://www.dwds.de/wb/"+vocabulary
         page = requests.get(link)
         soup = BeautifulSoup(page.content, "html.parser")
-        self.main_soup = soup.find('main')
         self.word = vocabulary
+        self.main_soup = soup.find('main')
+        if self.main_soup is None:
+            return
         self.processGarammer()
         self.processFrequency()
         self.processMeanings()
@@ -39,6 +46,8 @@ class Parser:
     def processGarammer(self):
         self.grammar = ''
         gram_soup = self.main_soup.find('div', {'class':'dwdswb-ft-block'})
+        if gram_soup is None:
+            return
         gram_soup = gram_soup.find('span',{'class':'dwdswb-ft-blocktext'})
         if gram_soup is None:
             return
@@ -266,13 +275,18 @@ class Parser:
         return
 
     def getGrammar(self):
-        return self.grammar
+        gram_text = replaceIfEmpty(self.grammar)
+        return gram_text
 
     def getFrequency(self):
         return 'h'+str(self.frequency)
 
     def getTags(self):
-        ret_tags = 'h'+str(self.frequency)
+        ret_tags = ''
+
+        if self.frequency != 0:
+            ret_tags += 'h'+str(self.frequency)
+
         if self.goethe != '':
             ret_tags += ' '+self.goethe
 
@@ -290,6 +304,7 @@ class Parser:
         for meaning in self.meanings:
             formatted_meaning_list.append( tabSpace()*meaning['indent']+meaning['label_definition'] + ' ' + meaning['definition'] )
         ret_string = '\n'.join(formatted_meaning_list)
+        ret_string = replaceIfEmpty(ret_string)
         return ret_string
 
     def getExamples(self, example_number):
@@ -308,11 +323,14 @@ class Parser:
                     formatted_examples_list.append( meaning['label_example']+example )
 
         ret_string = '\n'.join(formatted_examples_list)
+        ret_string = replaceIfEmpty(ret_string)
         return ret_string
 
     def getThesaurus(self):
         ret_thesaurus = []
         for thesaurus_block in self.thesaurus:
             ret_thesaurus.append('➤ '+thesaurus_block)
-        return '\n'.join(ret_thesaurus)
+        ret_string = '\n'.join(ret_thesaurus)
+        ret_string = replaceIfEmpty(ret_string)
+        return ret_string
 
