@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>824</height>
+    <height>800</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -88,7 +88,11 @@
          </spacer>
         </item>
         <item row="0" column="1" rowspan="2">
-         <widget class="QPlainTextEdit" name="grammar_plainTextEdit"/>
+         <widget class="QPlainTextEdit" name="grammar_plainTextEdit">
+          <property name="plainText">
+           <string>-</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -135,7 +139,11 @@
          </spacer>
         </item>
         <item row="0" column="1" rowspan="2">
-         <widget class="QPlainTextEdit" name="meaning_plainTextEdit"/>
+         <widget class="QPlainTextEdit" name="meaning_plainTextEdit">
+          <property name="plainText">
+           <string>-</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -165,7 +173,11 @@
          </widget>
         </item>
         <item row="0" column="1" rowspan="5">
-         <widget class="QPlainTextEdit" name="examples_plainTextEdit"/>
+         <widget class="QPlainTextEdit" name="examples_plainTextEdit">
+          <property name="plainText">
+           <string>-</string>
+          </property>
+         </widget>
         </item>
         <item row="0" column="2">
          <widget class="QPushButton" name="examples_button_copy">
@@ -251,19 +263,41 @@
           </property>
          </spacer>
         </item>
-        <item row="2" column="2">
-         <widget class="QLabel" name="label_tags">
-          <property name="text">
-           <string>Tags</string>
+        <item row="0" column="1" rowspan="3">
+         <widget class="QPlainTextEdit" name="thesaurus_plainTextEdit">
+          <property name="plainText">
+           <string>-</string>
           </property>
          </widget>
-        </item>
-        <item row="0" column="1" rowspan="3">
-         <widget class="QPlainTextEdit" name="thesaurus_plainTextEdit"/>
         </item>
        </layout>
       </widget>
      </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_tag">
+      <item>
+       <widget class="QLabel" name="tag_label">
+        <property name="text">
+         <string>Tags</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="tag_lineEdit">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="tag_button_copy">
+        <property name="text">
+         <string>Copy</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>

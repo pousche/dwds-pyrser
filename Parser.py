@@ -274,7 +274,14 @@ class Parser:
     def getTags(self):
         ret_tags = 'h'+str(self.frequency)
         if self.goethe != '':
-            ret_tags += ', '+self.goethe
+            ret_tags += ' '+self.goethe
+
+        grammar_tag = ''
+        if self.grammar != '':
+            grammar_tag = self.grammar.split(' | ')[0]
+        if 'Substantiv' in grammar_tag:
+            grammar_tag = 'Substantiv'
+        ret_tags += ' '+grammar_tag
         return ret_tags
 
     def getDefinitions(self):

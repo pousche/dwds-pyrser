@@ -24,7 +24,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(800, 824)
+        MainWindow.resize(800, 800)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout = QVBoxLayout(self.centralwidget)
@@ -179,11 +179,6 @@ class Ui_MainWindow(object):
 
         self.gridLayout_thesaurus.addItem(self.thesaurus_spacer_label, 1, 0, 1, 1)
 
-        self.label_tags = QLabel(self.layoutWidget3)
-        self.label_tags.setObjectName(u"label_tags")
-
-        self.gridLayout_thesaurus.addWidget(self.label_tags, 2, 2, 1, 1)
-
         self.thesaurus_plainTextEdit = QPlainTextEdit(self.layoutWidget3)
         self.thesaurus_plainTextEdit.setObjectName(u"thesaurus_plainTextEdit")
 
@@ -192,6 +187,26 @@ class Ui_MainWindow(object):
         self.splitter.addWidget(self.layoutWidget3)
 
         self.verticalLayout.addWidget(self.splitter)
+
+        self.horizontalLayout_tag = QHBoxLayout()
+        self.horizontalLayout_tag.setObjectName(u"horizontalLayout_tag")
+        self.tag_label = QLabel(self.centralwidget)
+        self.tag_label.setObjectName(u"tag_label")
+
+        self.horizontalLayout_tag.addWidget(self.tag_label)
+
+        self.tag_lineEdit = QLineEdit(self.centralwidget)
+        self.tag_lineEdit.setObjectName(u"tag_lineEdit")
+
+        self.horizontalLayout_tag.addWidget(self.tag_lineEdit)
+
+        self.tag_button_copy = QPushButton(self.centralwidget)
+        self.tag_button_copy.setObjectName(u"tag_button_copy")
+
+        self.horizontalLayout_tag.addWidget(self.tag_button_copy)
+
+
+        self.verticalLayout.addLayout(self.horizontalLayout_tag)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
@@ -214,13 +229,19 @@ class Ui_MainWindow(object):
         self.vocab_button_copy.setText(QCoreApplication.translate("MainWindow", u"Copy", None))
         self.grammar_button_copy.setText(QCoreApplication.translate("MainWindow", u"Copy", None))
         self.grammar_label.setText(QCoreApplication.translate("MainWindow", u"Grammatik", None))
+        self.grammar_plainTextEdit.setPlainText(QCoreApplication.translate("MainWindow", u"-", None))
         self.meaning_label.setText(QCoreApplication.translate("MainWindow", u"Bedeutung", None))
         self.meaning_button_copy.setText(QCoreApplication.translate("MainWindow", u"Copy", None))
+        self.meaning_plainTextEdit.setPlainText(QCoreApplication.translate("MainWindow", u"-", None))
         self.examples_label.setText(QCoreApplication.translate("MainWindow", u"Beispiele", None))
+        self.examples_plainTextEdit.setPlainText(QCoreApplication.translate("MainWindow", u"-", None))
         self.examples_button_copy.setText(QCoreApplication.translate("MainWindow", u"Copy", None))
         self.examples_label_count.setText(QCoreApplication.translate("MainWindow", u"Count", None))
         self.thesaurus_label.setText(QCoreApplication.translate("MainWindow", u"Verwandte", None))
         self.thesaurus_button_copy.setText(QCoreApplication.translate("MainWindow", u"Copy", None))
-        self.label_tags.setText(QCoreApplication.translate("MainWindow", u"Tags", None))
+        self.thesaurus_plainTextEdit.setPlainText(QCoreApplication.translate("MainWindow", u"-", None))
+        self.tag_label.setText(QCoreApplication.translate("MainWindow", u"Tags", None))
+        self.tag_lineEdit.setText("")
+        self.tag_button_copy.setText(QCoreApplication.translate("MainWindow", u"Copy", None))
     # retranslateUi
 

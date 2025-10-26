@@ -42,6 +42,8 @@ class MainWindow(QMainWindow):
 
         QObject.connect(self.ui.thesaurus_button_copy, SIGNAL ('clicked()'), lambda mw=self: MainWindow.copyThesaurus(mw))
 
+        QObject.connect(self.ui.tag_button_copy, SIGNAL ('clicked()'), lambda mw=self: MainWindow.copyTags(mw))
+
         self.ui.examples_slider.valueChanged.connect(self.processExamples)
         return
 
@@ -52,6 +54,7 @@ class MainWindow(QMainWindow):
         self.ui.meaning_label.setMinimumWidth(minimum_width_left)
         self.ui.examples_label.setMinimumWidth(minimum_width_left)
         self.ui.thesaurus_label.setMinimumWidth(minimum_width_left)
+        self.ui.tag_label.setMinimumWidth(minimum_width_left)
 
         minimum_width_right = 100
         self.ui.vocab_button_copy.setMinimumWidth(minimum_width_right)
@@ -59,6 +62,7 @@ class MainWindow(QMainWindow):
         self.ui.meaning_button_copy.setMinimumWidth(minimum_width_right)
         self.ui.examples_button_copy.setMinimumWidth(minimum_width_right)
         self.ui.thesaurus_button_copy.setMinimumWidth(minimum_width_right)
+        self.ui.tag_button_copy.setMinimumWidth(minimum_width_right)
 
         self.ui.splitter.setStretchFactor(0,1)
         self.ui.splitter.setStretchFactor(1,5)
@@ -82,7 +86,7 @@ class MainWindow(QMainWindow):
 
         self.ui.meaning_plainTextEdit.appendPlainText(parser.getDefinitions())
 
-        self.ui.label_tags.setText(parser.getTags())
+        self.ui.tag_lineEdit.setText(parser.getTags())
 
         self.ui.thesaurus_plainTextEdit.appendPlainText(parser.getThesaurus())
 
@@ -125,6 +129,11 @@ class MainWindow(QMainWindow):
     def copyThesaurus(self):
         clipboard = QApplication.clipboard()
         clipboard.setText(self.ui.thesaurus_plainTextEdit.toPlainText())
+        return
+
+    def copyTags(self):
+        clipboard = QApplication.clipboard()
+        clipboard.setText(self.ui.tag_lineEdit.text())
         return
 
     def showAbout(self):
