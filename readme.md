@@ -1,3 +1,16 @@
 # DWDS Parser
 
-This simple app parses the content of a DWDS article for creating an anki flashcard.
+A simple app for parse the content of a DWDS article into the following categories:
+- **Vokabular**: The word in question.
+- **Grammatik**: A short overview of the grammar of the expression.
+- **Bedeutung**: The meaning(s) of the word.
+- **Beispiele**: Examples corresponding to each meaning.
+- **Bedeutungsverwandte**: Related words with a similar meaning.
+
+The formatting is specifically designed for usage with [A German Learner's Deck](https://ankiweb.net/shared/info/1481153793).
+# Install
+
+Just download the latest release [here](https://github.com/pousche/dwds-pyrser/releases) and run it.
+# How to use
+
+Type your word into the "Vokabular" and press {Enter} or click away. The content will be parsed automatically. You can change the number of examples shown by moving the slider next to the examples fields. Each text field has a copy button next to it for easier transfer of the content.
