@@ -151,7 +151,19 @@ class Parser:
 
         ftla_soup = content_soup.find('div', {'class':'dwdswb-ft-la'}, recursive=False)
         if ftla_soup is not None:
-            definition_text = definition_text+' {'+ftla_soup.text+'}'
+            grammar_addition = ftla_soup.text
+            grammar_addition = grammar_addition.replace('Grammatik: Perfektbildung mit Hilfsverb ‘sein’','ist + Part. II')
+            grammar_addition = grammar_addition.replace('Grammatik: Perfektbildung mit Hilfsverb ‘haben’','hat + Part. II')
+            if "Grammatik: Präsens ‘" in grammar_addition:
+                grammar_addition = grammar_addition.replace("Grammatik: Präsens ‘","")
+                grammar_addition = grammar_addition.replace("’, Präteritum ‘",", ")
+                grammar_addition = grammar_addition.replace("’, Perfektbildung mit Hilfsverb ‘",", ")
+                grammar_addition = grammar_addition.replace("sein","ist")
+                grammar_addition = grammar_addition.replace("haben","hat")
+                grammar_addition = grammar_addition.replace("’, Partizip II ‘"," + ")
+                grammar_addition = grammar_addition.replace("’","")
+
+            definition_text = definition_text+' {'+grammar_addition+'}'
 
         verweise_soup = content_soup.find('span', {'class':'dwdswb-verweis'}, recursive=False)
         if verweise_soup is not None:
