@@ -1,6 +1,6 @@
 # DWDS Parser
 
-A simple app for parse the content of a DWDS article into the following categories:
+A simple app for parsing the content of a DWDS article into the following categories:
 - **Vokabular**: The word in question.
 - **Grammatik**: A short overview of the grammar of the expression.
 - **Bedeutung**: The meaning(s) of the word.
