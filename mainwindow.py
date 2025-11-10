@@ -2,7 +2,7 @@
 import sys
 
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
-from PySide6.QtCore import SIGNAL, QObject
+from PySide6.QtCore import SIGNAL, QObject, Qt
 
 # Important:
 # You need to run the following command to generate the ui_form.py file
@@ -140,9 +140,12 @@ class MainWindow(QMainWindow):
         build_time = bt.BuildTime()
         about_box = QMessageBox()
         about_box.setWindowTitle('About')
-        display_text = 'Version 1.2.5\n'
-        display_text += 'Built on: '+build_time.get()
+        display_text = 'Version 1.2.6<br>'
+        display_text += 'Built on: '+build_time.get()+'<br>'
+        display_text += "<a href='https://github.com/pousche/dwds-pyrser'>GitHub</a><br>"
+        display_text += "<a href='https://ankiweb.net/shared/info/2072626112'>Anki Deck</a><br>"
         about_box.setText(display_text)
+        about_box.setTextFormat(Qt.RichText)
         about_box.exec()
         return
 

@@ -7,7 +7,7 @@ A simple app for parsing the content of a DWDS article into the following catego
 - **Beispiele**: Examples corresponding to each meaning.
 - **Bedeutungsverwandte**: Related words with a similar meaning.
 
-The formatting is specifically designed for usage with [A German Learner's Deck](https://ankiweb.net/shared/info/1481153793).
+The formatting is specifically designed for usage with [Yet Another German Deck](https://ankiweb.net/shared/info/2072626112).
 # Install
 
 Just download the latest release [here](https://github.com/pousche/dwds-pyrser/releases) and run it.
