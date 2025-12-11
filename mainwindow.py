@@ -140,7 +140,7 @@ class MainWindow(QMainWindow):
         build_time = bt.BuildTime()
         about_box = QMessageBox()
         about_box.setWindowTitle('About')
-        display_text = 'Version 1.2.6<br>'
+        display_text = 'Version 1.2.7<br>'
         display_text += 'Built on: '+build_time.get()+'<br>'
         display_text += "<a href='https://github.com/pousche/dwds-pyrser'>GitHub</a><br>"
         display_text += "<a href='https://ankiweb.net/shared/info/2072626112'>Anki Deck</a><br>"

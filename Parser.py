@@ -163,6 +163,8 @@ class Parser:
                 grammar_addition = grammar_addition.replace("’, Partizip II ‘"," + ")
                 grammar_addition = grammar_addition.replace("’","")
 
+            grammar_addition = grammar_addition.replace("Grammatik: ","")
+
             definition_text = definition_text+' {'+grammar_addition+'}'
 
         verweise_soup = content_soup.find('span', {'class':'dwdswb-verweis'}, recursive=False)
